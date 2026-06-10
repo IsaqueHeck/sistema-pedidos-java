@@ -1,4 +1,4 @@
-package model;
+package com.isaque.sistemapedidos.model;
 
 public class Produto {
     private int id;

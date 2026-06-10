@@ -1,4 +1,4 @@
-package exceptions;
+package com.isaque.sistemapedidos.exceptions;
 
 public class EstoqueInsuficienteException extends RuntimeException {
     public EstoqueInsuficienteException(String message) {

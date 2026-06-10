@@ -1,4 +1,4 @@
-package exceptions;
+package com.isaque.sistemapedidos.exceptions;
 
 public class ProdutoDuplicadoException extends RuntimeException {
     public ProdutoDuplicadoException(String message) {

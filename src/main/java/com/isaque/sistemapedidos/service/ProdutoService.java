@@ -1,13 +1,15 @@
-package service;
+package com.isaque.sistemapedidos.service;
 
-import exceptions.ProdutoDuplicadoException;
-import exceptions.ProdutoNaoEncontradoException;
-import model.Produto;
-import repository.ProdutoRepository;
+import com.isaque.sistemapedidos.exceptions.ProdutoDuplicadoException;
+import com.isaque.sistemapedidos.exceptions.ProdutoNaoEncontradoException;
+import com.isaque.sistemapedidos.model.Produto;
+import com.isaque.sistemapedidos.repository.ProdutoRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class ProdutoService {
   private ProdutoRepository repository;
 

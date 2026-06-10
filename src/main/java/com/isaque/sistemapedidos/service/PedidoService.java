@@ -1,15 +1,17 @@
-package service;
+package com.isaque.sistemapedidos.service;
 
-import exceptions.EstoqueInsuficienteException;
-import exceptions.ProdutoNaoEncontradoException;
-import model.Pedido;
-import model.Produto;
-import repository.PedidoRepository;
-import repository.ProdutoRepository;
+import com.isaque.sistemapedidos.exceptions.EstoqueInsuficienteException;
+import com.isaque.sistemapedidos.exceptions.ProdutoNaoEncontradoException;
+import com.isaque.sistemapedidos.model.Pedido;
+import com.isaque.sistemapedidos.model.Produto;
+import com.isaque.sistemapedidos.repository.PedidoRepository;
+import com.isaque.sistemapedidos.repository.ProdutoRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class PedidoService {
     private PedidoRepository pedidoRepository;
     private ProdutoRepository produtoRepository;

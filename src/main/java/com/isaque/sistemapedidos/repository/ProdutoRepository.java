@@ -1,10 +1,12 @@
-package repository;
+package com.isaque.sistemapedidos.repository;
 
-import model.Produto;
+import com.isaque.sistemapedidos.model.Produto;
+import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Repository
 public class ProdutoRepository {
    private Map<Integer, Produto> produtos;
 
