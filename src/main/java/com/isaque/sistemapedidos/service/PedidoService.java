@@ -13,11 +13,11 @@ import java.util.stream.Collectors;
 
 @Service
 public class PedidoService {
-    private PedidoRepository pedidoRepository;
-    private ProdutoRepository produtoRepository;
+    private final PedidoRepository pedidoRepository;
+    private final ProdutoRepository produtoRepository;
 
-    public PedidoService (ProdutoRepository produtoRepository) {
-        this.pedidoRepository = new PedidoRepository();
+    public PedidoService (PedidoRepository pedidoRepository, ProdutoRepository produtoRepository) {
+        this.pedidoRepository = pedidoRepository;
         this.produtoRepository = produtoRepository;
     }
 

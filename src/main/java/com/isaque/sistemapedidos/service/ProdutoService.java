@@ -11,10 +11,10 @@ import java.util.stream.Collectors;
 
 @Service
 public class ProdutoService {
-  private ProdutoRepository repository;
+  private final ProdutoRepository repository;
 
-  public ProdutoService() {
-      this.repository = new ProdutoRepository();
+  public ProdutoService(ProdutoRepository repository) {
+      this.repository = repository;
   }
 
   public void adicionarProduto(Produto produto) {
