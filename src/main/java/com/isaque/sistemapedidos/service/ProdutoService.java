@@ -50,9 +50,18 @@ public class ProdutoService {
                 .toList();
     }
 
-  public void removerProduto(int id) {
-      repository.removerProduto(id);
-  }
+    public void removerProduto(int id) {
+
+        Produto produto = repository.buscarPorId(id);
+
+        if(produto == null) {
+            throw new ProdutoNaoEncontradoException(
+                    "Produto inexistente"
+            );
+        }
+
+        repository.removerProduto(id);
+    }
 
   public List<Produto> listarProdutosCaros() {
       return repository.getProdutos()

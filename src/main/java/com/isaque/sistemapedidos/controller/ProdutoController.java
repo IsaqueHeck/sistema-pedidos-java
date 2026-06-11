@@ -30,6 +30,10 @@ public class ProdutoController {
         return produtoService.buscarPorId(id);
    }
 
+   @DeleteMapping("/produtos/{id}")
+   public void removerProduto(@PathVariable int id) {
+        produtoService.removerProduto(id);
+   }
 
 
 }
