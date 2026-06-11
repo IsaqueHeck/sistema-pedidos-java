@@ -2,10 +2,7 @@ package com.isaque.sistemapedidos.controller;
 
 import com.isaque.sistemapedidos.model.Produto;
 import com.isaque.sistemapedidos.service.ProdutoService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,6 +25,10 @@ public class ProdutoController {
         return produtoService.listarProdutos();
     }
 
+   @GetMapping("/produtos/{id}")
+    public Produto buscarPorId(@PathVariable int id) {
+        return produtoService.buscarPorId(id);
+   }
 
 
 
