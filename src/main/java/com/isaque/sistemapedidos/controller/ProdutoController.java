@@ -1,8 +1,13 @@
 package com.isaque.sistemapedidos.controller;
 
+import com.isaque.sistemapedidos.model.Produto;
 import com.isaque.sistemapedidos.service.ProdutoService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 public class ProdutoController {
@@ -12,8 +17,18 @@ public class ProdutoController {
         this.produtoService = produtoService;
     }
 
-    @GetMapping("/teste")
-    public String teste() {
-        return "API de Produtos funcionando!";
+
+    @PostMapping("/produtos")
+    public void adicionarProduto(@RequestBody Produto produto) {
+      produtoService.adicionarProduto(produto);
     }
+
+    @GetMapping("/produtos")
+    public List<Produto> listarProdutos() {
+        return produtoService.listarProdutos();
+    }
+
+
+
+
 }

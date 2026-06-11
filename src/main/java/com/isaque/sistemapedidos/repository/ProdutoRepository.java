@@ -22,10 +22,8 @@ public class ProdutoRepository {
       return produtos.get(id);
     }
 
-    public void listarProdutos() {
-        for(Produto produto : produtos.values()) {
-            System.out.println(produto);
-        }
+    public Map<Integer, Produto> listarProdutos() {
+        return produtos;
     }
 
    public void removerProduto(int id) {

@@ -18,6 +18,8 @@ public class ProdutoService {
   }
 
   public void adicionarProduto(Produto produto) {
+      System.out.println(produto);
+
       Produto produtoExistente = repository.buscarPorId(produto.getId());
 
       if (produtoExistente != null) {
@@ -41,9 +43,12 @@ public class ProdutoService {
      return produto;
   }
 
-  public void listarProdutos() {
-      repository.listarProdutos();
-  }
+    public List<Produto> listarProdutos() {
+        return repository.listarProdutos()
+                .values()
+                .stream()
+                .toList();
+    }
 
   public void removerProduto(int id) {
       repository.removerProduto(id);
