@@ -30,6 +30,14 @@ public class ProdutoRepository {
         produtos.remove(id);
    }
 
+   public void atualizarProduto(int id, Produto produtoAtualizado) {
+        Produto produto = produtos.get(id);
+
+        produto.setNome(produtoAtualizado.getNome());
+        produto.setPreco(produtoAtualizado.getPreco());
+        produto.setQuantidadeEstoque(produtoAtualizado.getQuantidadeEstoque());
+   }
+
    public Map<Integer, Produto> getProdutos() {
         return produtos;
    }

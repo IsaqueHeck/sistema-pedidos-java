@@ -35,5 +35,10 @@ public class ProdutoController {
         produtoService.removerProduto(id);
    }
 
+   @PutMapping("/produtos/{id}")
+    public void atualizarProduto(@PathVariable int id, @RequestBody Produto produtoAtualizado) {
+        produtoService.atualizarProduto(id, produtoAtualizado);
+   }
+
 
 }

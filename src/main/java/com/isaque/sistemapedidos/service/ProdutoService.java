@@ -1,5 +1,7 @@
 package com.isaque.sistemapedidos.service;
 
+import com.isaque.sistemapedidos.exceptions.EstoqueNegativoException;
+import com.isaque.sistemapedidos.exceptions.PrecoNegativoException;
 import com.isaque.sistemapedidos.exceptions.ProdutoDuplicadoException;
 import com.isaque.sistemapedidos.exceptions.ProdutoNaoEncontradoException;
 import com.isaque.sistemapedidos.model.Produto;
@@ -18,7 +20,6 @@ public class ProdutoService {
   }
 
   public void adicionarProduto(Produto produto) {
-      System.out.println(produto);
 
       Produto produtoExistente = repository.buscarPorId(produto.getId());
 
@@ -61,6 +62,29 @@ public class ProdutoService {
         }
 
         repository.removerProduto(id);
+    }
+
+    public void atualizarProduto(int id, Produto produtoAtualizado) {
+      Produto produto = repository.buscarPorId(id);
+
+      if(produto == null) {
+          throw new ProdutoNaoEncontradoException(
+                  "Produto inexistente"
+          );
+      }
+
+      if(produtoAtualizado.getPreco() < 0) {
+          throw new PrecoNegativoException(
+                  "O preço não deve ser negativo"
+          );
+      }
+
+      if(produtoAtualizado.getQuantidadeEstoque() < 0) {
+          throw new EstoqueNegativoException(
+                  "A quantidade não deve ser negativa"
+          );
+      }
+      repository.atualizarProduto(id, produtoAtualizado);
     }
 
   public List<Produto> listarProdutosCaros() {
