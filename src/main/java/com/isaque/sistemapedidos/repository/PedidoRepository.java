@@ -22,10 +22,8 @@ public class PedidoRepository {
         return pedidos.get(id);
     }
 
-    public void listarPedidos() {
-        for(Pedido pedido : pedidos.values()) {
-            System.out.println(pedido);
-        }
+    public Map<Integer, Pedido> listarPedidos() {
+        return pedidos;
     }
 
     public Map<Integer, Pedido> getPedidos() {

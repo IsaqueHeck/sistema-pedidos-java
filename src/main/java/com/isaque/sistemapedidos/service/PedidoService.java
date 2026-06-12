@@ -43,6 +43,13 @@ public class PedidoService {
         pedidoRepository.salvarPedido(pedido);
     }
 
+    public List<Pedido> listarPedidos() {
+        return pedidoRepository.listarPedidos()
+                .values()
+                .stream()
+                .toList();
+    }
+
     public List<Pedido> listarPedidosAcimaDeValor(double valor) {
         return pedidoRepository.getPedidos()
                 .values()

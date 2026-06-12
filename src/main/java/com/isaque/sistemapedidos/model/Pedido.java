@@ -9,6 +9,10 @@ public class Pedido {
     private List<Produto> produtos;
     private double valorTotal;
 
+    public Pedido() {
+        produtos = new ArrayList<>();
+    }
+
     public Pedido(int id, String nomeCliente, double valorTotal) {
         this.id = id;
         this.nomeCliente = nomeCliente;
