@@ -1,5 +1,6 @@
 package com.isaque.sistemapedidos.exceptionhandler;
 
+import com.isaque.sistemapedidos.exceptions.PedidoNaoEncontradoException;
 import com.isaque.sistemapedidos.exceptions.ProdutoDuplicadoException;
 import com.isaque.sistemapedidos.exceptions.ProdutoNaoEncontradoException;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ProdutoDuplicadoException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public String tratarProdutoDuplicado(ProdutoDuplicadoException ex) {
+        return ex.getMessage();
+    }
+
+    @ExceptionHandler(PedidoNaoEncontradoException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public String tratarPedidoNaoEncontrado(
+            PedidoNaoEncontradoException ex) {
+
         return ex.getMessage();
     }
 

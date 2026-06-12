@@ -1,6 +1,7 @@
 package com.isaque.sistemapedidos.service;
 
 import com.isaque.sistemapedidos.exceptions.EstoqueInsuficienteException;
+import com.isaque.sistemapedidos.exceptions.PedidoNaoEncontradoException;
 import com.isaque.sistemapedidos.exceptions.ProdutoNaoEncontradoException;
 import com.isaque.sistemapedidos.model.Pedido;
 import com.isaque.sistemapedidos.model.Produto;
@@ -42,6 +43,21 @@ public class PedidoService {
         pedido.setValorTotal(valorTotal);
         pedidoRepository.salvarPedido(pedido);
     }
+
+    public Pedido buscarPorId(int id) {
+
+        Pedido pedido = pedidoRepository.buscarPorId(id);
+
+        if(pedido == null) {
+            throw new PedidoNaoEncontradoException(
+                    "Pedido não encontrado"
+            );
+        }
+
+        return pedido;
+    }
+
+
 
     public List<Pedido> listarPedidos() {
         return pedidoRepository.listarPedidos()
