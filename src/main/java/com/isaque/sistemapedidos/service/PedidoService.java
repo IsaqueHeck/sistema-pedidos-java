@@ -26,7 +26,8 @@ public class PedidoService {
         double valorTotal = 0;
 
         for(Produto produtoPedido : pedido.getProdutos()) {
-            Produto produtoEstoque = produtoRepository.buscarPorId(produtoPedido.getId());
+            Produto produtoEstoque = produtoRepository.findById(produtoPedido.getId())
+                    .orElse(null);
 
             if(produtoEstoque == null) {
                 throw new ProdutoNaoEncontradoException("Produto não encontrado");

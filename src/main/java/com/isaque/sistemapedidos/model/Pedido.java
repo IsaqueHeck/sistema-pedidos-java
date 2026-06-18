@@ -1,13 +1,19 @@
 package com.isaque.sistemapedidos.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
+@Entity
 public class Pedido {
+    @Id
     private int id;
     private String nomeCliente;
     private List<Produto> produtos;
     private double valorTotal;
+
+    public Pedido() {
+
+    }
 
     public Pedido() {
         produtos = new ArrayList<>();

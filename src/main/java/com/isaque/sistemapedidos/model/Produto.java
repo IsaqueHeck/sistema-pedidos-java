@@ -1,6 +1,11 @@
 package com.isaque.sistemapedidos.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+@Entity
 public class Produto {
+    @Id
     private int id;
     private String nome;
     private double preco;

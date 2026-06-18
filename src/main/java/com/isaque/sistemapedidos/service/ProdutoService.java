@@ -21,10 +21,10 @@ public class ProdutoService {
 
   public void adicionarProduto(Produto produto) {
 
-      Produto produtoExistente = repository.buscarPorId(produto.getId());
-
-      if (produtoExistente != null) {
-          throw new ProdutoDuplicadoException("Já existe produto com id: " + produto.getId());
+      if (repository.existsById(produto.getId())) {
+          throw new ProdutoDuplicadoException(
+                  "Já existe produto com id: " + produto.getId()
+          );
       }
       if (produto.getPreco() < 0 ) {
           throw new IllegalArgumentException("Preço não pode ser negativo");
@@ -33,11 +33,13 @@ public class ProdutoService {
           throw new IllegalArgumentException("Estoque não pode ser negativo");
       }
 
-      repository.salvarProduto(produto);
+      repository.save(produto);
   }
 
   public Produto buscarPorId(int id) {
-     Produto produto = repository.buscarPorId(id);
+     Produto produto = repository.findById(id)
+             .orElse(null);
+
      if(produto == null) {
          throw new ProdutoNaoEncontradoException("Produto inexistente");
      }
@@ -45,15 +47,13 @@ public class ProdutoService {
   }
 
     public List<Produto> listarProdutos() {
-        return repository.listarProdutos()
-                .values()
-                .stream()
-                .toList();
+        return repository.findAll();
     }
 
     public void removerProduto(int id) {
 
-        Produto produto = repository.buscarPorId(id);
+        Produto produto = repository.findById(id)
+                .orElse(null);
 
         if(produto == null) {
             throw new ProdutoNaoEncontradoException(
@@ -61,11 +61,12 @@ public class ProdutoService {
             );
         }
 
-        repository.removerProduto(id);
+        repository.deleteById(id);
     }
 
     public void atualizarProduto(int id, Produto produtoAtualizado) {
-      Produto produto = repository.buscarPorId(id);
+      Produto produto = repository.findById(id)
+              .orElse(null);
 
       if(produto == null) {
           throw new ProdutoNaoEncontradoException(
@@ -84,28 +85,33 @@ public class ProdutoService {
                   "A quantidade não deve ser negativa"
           );
       }
-      repository.atualizarProduto(id, produtoAtualizado);
+        produto.setNome(produtoAtualizado.getNome());
+
+        produto.setPreco(produtoAtualizado.getPreco());
+
+        produto.setQuantidadeEstoque(
+                produtoAtualizado.getQuantidadeEstoque()
+        );
+
+        repository.save(produto);
     }
 
   public List<Produto> listarProdutosCaros() {
-      return repository.getProdutos()
-              .values()
+      return repository.findAll()
               .stream()
               .filter(produto -> produto.getPreco() > 100)
               .collect(Collectors.toList());
   }
 
   public List<Produto> listarProdutosSemEstoque() {
-      return repository.getProdutos()
-              .values()
+      return repository.findAll()
               .stream()
               .filter(produto -> produto.getQuantidadeEstoque() == 0)
               .collect(Collectors.toList());
   }
 
   public List<String> listarNomesProdutos() {
-      return repository.getProdutos()
-              .values()
+      return repository.findAll()
               .stream()
               .map(Produto::getNome)
               .collect(Collectors.toList());
