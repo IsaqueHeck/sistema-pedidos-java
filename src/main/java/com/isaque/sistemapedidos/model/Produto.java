@@ -1,28 +1,24 @@
 package com.isaque.sistemapedidos.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
 public class Produto {
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     private String nome;
     private double preco;
-    private int quantidadeEstoque;
+    private Integer quantidadeEstoque;
 
     public Produto() {
 
     }
 
-    public Produto(int id, String nome, double preco, int quantidadeEstoque) {
-        this.id = id;
-        this.nome = nome;
-        this.preco = preco;
-        this.quantidadeEstoque = quantidadeEstoque;
-    }
-
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -34,11 +30,11 @@ public class Produto {
         return preco;
     }
 
-    public int getQuantidadeEstoque() {
+    public Integer getQuantidadeEstoque() {
         return quantidadeEstoque;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -50,7 +46,7 @@ public class Produto {
         this.preco = preco;
     }
 
-    public void setQuantidadeEstoque(int quantidadeEstoque) {
+    public void setQuantidadeEstoque(Integer quantidadeEstoque) {
         this.quantidadeEstoque = quantidadeEstoque;
     }
 

@@ -2,7 +2,6 @@ package com.isaque.sistemapedidos.service;
 
 import com.isaque.sistemapedidos.exceptions.EstoqueNegativoException;
 import com.isaque.sistemapedidos.exceptions.PrecoNegativoException;
-import com.isaque.sistemapedidos.exceptions.ProdutoDuplicadoException;
 import com.isaque.sistemapedidos.exceptions.ProdutoNaoEncontradoException;
 import com.isaque.sistemapedidos.model.Produto;
 import com.isaque.sistemapedidos.repository.ProdutoRepository;
@@ -21,11 +20,6 @@ public class ProdutoService {
 
   public void adicionarProduto(Produto produto) {
 
-      if (repository.existsById(produto.getId())) {
-          throw new ProdutoDuplicadoException(
-                  "Já existe produto com id: " + produto.getId()
-          );
-      }
       if (produto.getPreco() < 0 ) {
           throw new IllegalArgumentException("Preço não pode ser negativo");
       }
@@ -36,7 +30,7 @@ public class ProdutoService {
       repository.save(produto);
   }
 
-  public Produto buscarPorId(int id) {
+  public Produto buscarPorId(Integer id) {
      Produto produto = repository.findById(id)
              .orElse(null);
 
@@ -50,7 +44,7 @@ public class ProdutoService {
         return repository.findAll();
     }
 
-    public void removerProduto(int id) {
+    public void removerProduto(Integer id) {
 
         Produto produto = repository.findById(id)
                 .orElse(null);
@@ -64,7 +58,7 @@ public class ProdutoService {
         repository.deleteById(id);
     }
 
-    public void atualizarProduto(int id, Produto produtoAtualizado) {
+    public void atualizarProduto(Integer id, Produto produtoAtualizado) {
       Produto produto = repository.findById(id)
               .orElse(null);
 

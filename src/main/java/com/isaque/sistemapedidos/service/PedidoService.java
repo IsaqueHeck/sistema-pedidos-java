@@ -3,6 +3,7 @@ package com.isaque.sistemapedidos.service;
 import com.isaque.sistemapedidos.exceptions.EstoqueInsuficienteException;
 import com.isaque.sistemapedidos.exceptions.PedidoNaoEncontradoException;
 import com.isaque.sistemapedidos.exceptions.ProdutoNaoEncontradoException;
+import com.isaque.sistemapedidos.model.ItemPedido;
 import com.isaque.sistemapedidos.model.Pedido;
 import com.isaque.sistemapedidos.model.Produto;
 import com.isaque.sistemapedidos.repository.PedidoRepository;
@@ -17,7 +18,7 @@ public class PedidoService {
     private final PedidoRepository pedidoRepository;
     private final ProdutoRepository produtoRepository;
 
-    public PedidoService (PedidoRepository pedidoRepository, ProdutoRepository produtoRepository) {
+    public PedidoService(PedidoRepository pedidoRepository, ProdutoRepository produtoRepository) {
         this.pedidoRepository = pedidoRepository;
         this.produtoRepository = produtoRepository;
     }
@@ -25,31 +26,37 @@ public class PedidoService {
     public void realizarPedido(Pedido pedido) {
         double valorTotal = 0;
 
-        for(Produto produtoPedido : pedido.getProdutos()) {
-            Produto produtoEstoque = produtoRepository.findById(produtoPedido.getId())
+        for (ItemPedido item : pedido.getItens()) {
+            Produto produtoEstoque = produtoRepository.findById(item.getProduto().getId())
                     .orElse(null);
 
-            if(produtoEstoque == null) {
+            if (produtoEstoque == null) {
                 throw new ProdutoNaoEncontradoException("Produto não encontrado");
             }
 
-            if(produtoEstoque.getQuantidadeEstoque() < produtoPedido.getQuantidadeEstoque()) {
+            if (produtoEstoque.getQuantidadeEstoque() < item.getQuantidade()) {
                 throw new EstoqueInsuficienteException("Estoque insuficiente para: " + produtoEstoque.getNome());
             }
 
-            produtoEstoque.setQuantidadeEstoque(produtoEstoque.getQuantidadeEstoque() - produtoPedido.getQuantidadeEstoque());
+            produtoEstoque.setQuantidadeEstoque(produtoEstoque.getQuantidadeEstoque() - item.getQuantidade());
 
-            valorTotal += produtoEstoque.getPreco() * produtoPedido.getQuantidadeEstoque();
+            produtoRepository.save(produtoEstoque);
+
+            item.setProduto(produtoEstoque);
+            item.setPedido(pedido);
+
+            valorTotal += produtoEstoque.getPreco() * item.getQuantidade();
         }
         pedido.setValorTotal(valorTotal);
-        pedidoRepository.salvarPedido(pedido);
+        pedidoRepository.save(pedido);
     }
 
-    public Pedido buscarPorId(int id) {
+    public Pedido buscarPorId(Integer id) {
 
-        Pedido pedido = pedidoRepository.buscarPorId(id);
+        Pedido pedido = pedidoRepository.findById(id)
+                .orElse(null);
 
-        if(pedido == null) {
+        if (pedido == null) {
             throw new PedidoNaoEncontradoException(
                     "Pedido não encontrado"
             );
@@ -59,17 +66,12 @@ public class PedidoService {
     }
 
 
-
     public List<Pedido> listarPedidos() {
-        return pedidoRepository.listarPedidos()
-                .values()
-                .stream()
-                .toList();
+        return pedidoRepository.findAll();
     }
 
     public List<Pedido> listarPedidosAcimaDeValor(double valor) {
-        return pedidoRepository.getPedidos()
-                .values()
+        return pedidoRepository.findAll()
                 .stream()
                 .filter(pedido -> pedido.getValorTotal() > valor)
                 .collect(Collectors.toList());

@@ -1,32 +1,27 @@
 package com.isaque.sistemapedidos.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Pedido {
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
     private String nomeCliente;
-    private List<Produto> produtos;
+
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ItemPedido> itens = new ArrayList<>();
+
     private double valorTotal;
 
     public Pedido() {
-
     }
 
-    public Pedido() {
-        produtos = new ArrayList<>();
-    }
-
-    public Pedido(int id, String nomeCliente, double valorTotal) {
-        this.id = id;
-        this.nomeCliente = nomeCliente;
-        this.valorTotal = valorTotal;
-        produtos = new ArrayList<>();
-    }
-
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -34,15 +29,15 @@ public class Pedido {
         return nomeCliente;
     }
 
-    public List<Produto> getProdutos() {
-        return produtos;
+    public List<ItemPedido> getItens() {
+        return itens;
     }
 
     public double getValorTotal() {
         return valorTotal;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -50,16 +45,16 @@ public class Pedido {
         this.nomeCliente = nomeCliente;
     }
 
-    public void setProdutos(List<Produto> produtos) {
-        this.produtos = produtos;
+    public void setItens(List<ItemPedido> itens) {
+        this.itens = itens;
     }
 
     public void setValorTotal(double valorTotal) {
         this.valorTotal = valorTotal;
     }
 
-    public void adicionarProduto(Produto produto) {
-        produtos.add(produto);
+    public void adicionarItem(ItemPedido item) {
+        itens.add(item);
     }
 
     @Override
@@ -67,7 +62,7 @@ public class Pedido {
         return
                 "\nPedido ID: " + id +
                         "\nCliente: " + nomeCliente +
-                        "\nProdutos: " + produtos +
+                        "\nItens: " + itens +
                         "\nValor Total: R$" + valorTotal +
                         "\n";
     }

@@ -3,9 +3,6 @@ package com.isaque.sistemapedidos.controller;
 import com.isaque.sistemapedidos.model.Pedido;
 import com.isaque.sistemapedidos.service.PedidoService;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.service.annotation.PatchExchange;
-
-import java.awt.*;
 import java.util.List;
 
 @RestController
