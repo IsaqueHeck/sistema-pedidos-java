@@ -1,16 +1,26 @@
+﻿### Maven / build ###
+target/
+*.class
+
+### Logs ###
+*.log
+logs/
+
 ### IntelliJ IDEA ###
+.idea/
+*.iml
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 
-### Eclipse ###
+### Eclipse / STS ###
 .apt_generated
 .classpath
 .factorypath
 .project
-.settings
+.settings/
 .springBeans
-.sts4-cache
+.sts4-cache/
 bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
@@ -25,9 +35,11 @@ bin/
 ### VS Code ###
 .vscode/
 
-### Mac OS ###
+### OS files ###
 .DS_Store
+Thumbs.db
 
-.idea/
-*.iml
-out/
+### Local database files ###
+data/
+*.mv.db
+*.trace.db
