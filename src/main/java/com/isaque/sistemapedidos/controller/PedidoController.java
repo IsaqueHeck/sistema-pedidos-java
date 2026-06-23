@@ -1,5 +1,6 @@
 package com.isaque.sistemapedidos.controller;
 
+import com.isaque.sistemapedidos.dto.CriarPedidoRequest;
 import com.isaque.sistemapedidos.model.Pedido;
 import com.isaque.sistemapedidos.service.PedidoService;
 import org.springframework.web.bind.annotation.*;
@@ -14,8 +15,8 @@ public class PedidoController {
     }
 
     @PostMapping("/pedidos")
-    public void realizarPedido(@RequestBody Pedido pedido) {
-        pedidoService.realizarPedido(pedido);
+    public void realizarPedido(@RequestBody CriarPedidoRequest request) {
+        pedidoService.realizarPedido(request);
     }
 
     @GetMapping("/pedidos")

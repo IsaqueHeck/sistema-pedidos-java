@@ -43,4 +43,12 @@ public class GlobalExceptionHandler {
         );
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse tratarIllegalArgumentException(IllegalArgumentException ex) {
+        return new ErrorResponse(LocalDateTime.now().toString(),
+        HttpStatus.BAD_REQUEST.value(),
+        ex.getMessage());
+    }
+
 }

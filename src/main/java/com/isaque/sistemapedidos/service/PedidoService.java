@@ -1,5 +1,7 @@
 package com.isaque.sistemapedidos.service;
 
+import com.isaque.sistemapedidos.dto.CriarPedidoRequest;
+import com.isaque.sistemapedidos.dto.ItemPedidoRequest;
 import com.isaque.sistemapedidos.exceptions.EstoqueInsuficienteException;
 import com.isaque.sistemapedidos.exceptions.PedidoNaoEncontradoException;
 import com.isaque.sistemapedidos.exceptions.ProdutoNaoEncontradoException;
@@ -9,6 +11,7 @@ import com.isaque.sistemapedidos.model.Produto;
 import com.isaque.sistemapedidos.repository.PedidoRepository;
 import com.isaque.sistemapedidos.repository.ProdutoRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,29 +26,54 @@ public class PedidoService {
         this.produtoRepository = produtoRepository;
     }
 
-    public void realizarPedido(Pedido pedido) {
+    @Transactional
+    public void realizarPedido(CriarPedidoRequest request) {
+
+        if(request.getNomeCliente() == null || request.getNomeCliente().isBlank()) {
+            throw new IllegalArgumentException("Nome do cliente é obrigatório");
+        }
+
+        if(request.getItens() == null || request.getItens().isEmpty()) {
+            throw new IllegalArgumentException("Pedido deve ter pelo menos um item");
+        }
+
+        Pedido pedido = new Pedido();
+        pedido.setNomeCliente(request.getNomeCliente());
+
         double valorTotal = 0;
 
-        for (ItemPedido item : pedido.getItens()) {
-            Produto produtoEstoque = produtoRepository.findById(item.getProduto().getId())
+        for (ItemPedidoRequest itemRequest : request.getItens()) {
+
+            if(itemRequest.getProdutoId() == null) {
+                throw new IllegalArgumentException("Produto é obrigatório");
+            }
+
+            if(itemRequest.getQuantidade() == null || itemRequest.getQuantidade() <= 0) {
+                throw new IllegalArgumentException("Quantidade deve ser maior que zero");
+            }
+            Produto produtoEstoque = produtoRepository.findById(itemRequest.getProdutoId())
                     .orElse(null);
 
             if (produtoEstoque == null) {
                 throw new ProdutoNaoEncontradoException("Produto não encontrado");
             }
 
-            if (produtoEstoque.getQuantidadeEstoque() < item.getQuantidade()) {
+            if (produtoEstoque.getQuantidadeEstoque() < itemRequest.getQuantidade()) {
                 throw new EstoqueInsuficienteException("Estoque insuficiente para: " + produtoEstoque.getNome());
             }
 
-            produtoEstoque.setQuantidadeEstoque(produtoEstoque.getQuantidadeEstoque() - item.getQuantidade());
+            produtoEstoque.setQuantidadeEstoque(produtoEstoque.getQuantidadeEstoque() - itemRequest.getQuantidade());
 
             produtoRepository.save(produtoEstoque);
 
+            ItemPedido item = new ItemPedido();
             item.setProduto(produtoEstoque);
+            item.setQuantidade(itemRequest.getQuantidade());
             item.setPedido(pedido);
 
-            valorTotal += produtoEstoque.getPreco() * item.getQuantidade();
+            pedido.adicionarItem(item);
+
+            valorTotal += produtoEstoque.getPreco() * itemRequest.getQuantidade();
         }
         pedido.setValorTotal(valorTotal);
         pedidoRepository.save(pedido);
